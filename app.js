@@ -48,6 +48,21 @@ let financeController = (function (){
     }
   };
 
+  return {
+    addItem: function (type, des, val){
+
+      let item, id;
+
+      if(type === "inc") {
+        item = new Income (id, desc, val);
+      } else {
+            item = new Expense (id, desc, val);
+      }
+
+      data.items[type].push(item);
+    }
+  };
+
 })();
 
 
