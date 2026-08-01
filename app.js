@@ -23,6 +23,24 @@ let uiController = (function (){
 })();
 
 let financeController = (function (){
+   
+  let Income = function (id, description, value) {
+    this.id = id;
+    this.description = description;
+    this.value = value;
+  };
+
+  let Expense =function (id, description, value) {
+    this.id = id;
+    this.description = description;
+    this.value = value;
+  };
+
+  let incomes = [];
+  let expenses  = []
+
+  let totalIncome = 0;
+  let totalexpenses = 0;
 
 })();
 
