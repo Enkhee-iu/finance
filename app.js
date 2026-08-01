@@ -35,12 +35,18 @@ let financeController = (function (){
     this.description = description;
     this.value = value;
   };
+   
+  let data = {
+    allItems: {
+      inc: [],
+      exp: []
+    },
 
-  let incomes = [];
-  let expenses  = []
-
-  let totalIncome = 0;
-  let totalexpenses = 0;
+    totals: {
+      inc: 0,
+      exp: 0
+    }
+  };
 
 })();
 
