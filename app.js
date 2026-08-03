@@ -20,6 +20,19 @@ let uiController = (function (){
       return Domstrings;
     },
 
+    clearFields: function () {
+      let fields = document.querySelectorAll
+      (Domstrings.inputDescription + ", " + Domstrings.inputValue);
+
+      let fieldsArr = Array.prototype.slice.call(fields);
+
+      for (let i = 0; i < fieldsArr.length; i++) {
+        fieldsArr[i].value = "";
+      }
+
+      fieldsArr[0].focus();
+    },
+
     addListItem: function(item, type) {
       let html, newHtml, element;
       if (type === "inc") {
@@ -30,7 +43,7 @@ let uiController = (function (){
         html = '<div class="item clearfix" id="expense-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
       }
     }
-  };
+  }; 
 })();
 
 let financeController = (function (){
@@ -94,6 +107,7 @@ let appController = (function (uicontroller, financecontroller){
    let item = financecontroller.addItem(input.type, input.description, input.value);
 
    uiController.addListItem(item, input.type);
+   uiController.clearFields();
 
    };
 
