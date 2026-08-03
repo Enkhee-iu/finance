@@ -104,10 +104,20 @@ let appController = (function (uicontroller, financecontroller){
    let ctrlAddItem = function () {
     let input = uicontroller.getInput();
 
-   let item = financecontroller.addItem(input.type, input.description, input.value);
+
+    if(input.description !== "" && input.value !== ""){
+ let item = financecontroller.addItem(
+    input.type, 
+    input.description, 
+    input.value
+  );
 
    uiController.addListItem(item, input.type);
    uiController.clearFields();
+
+    }
+
+  
 
    };
 
