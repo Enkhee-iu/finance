@@ -59,6 +59,13 @@ let financeController = (function (){
     this.description = description;
     this.value = value;
   };
+
+  let calculateTotal = function (type) {
+    let sum = 0;
+    data.items[type].forEach(function(el){
+      sum = sum + el.value;
+    });
+  };
    
   let data = {
     allItems: {
@@ -69,10 +76,31 @@ let financeController = (function (){
     totals: {
       inc: 0,
       exp: 0
-    }
+    },
+    tusuv: 0,
   };
 
   return {
+
+    tusuvTootsooloh: function () {
+      calculateTotal("inc");
+      calculateTotal("exp");
+
+      data.tusuv.tusuv = data.totals.inc - data.totals.exp;
+      data.huvi = Math.round((data.totals.exp / data.totals.inc) * 100);
+    },
+
+    tusviigAvah: function () { 
+      return {
+        tusuv: data.tusuv,
+        huvi: data.huvi,
+        totalInc: data.totals.inc,
+        totalExp: data.totals.exp
+      }
+
+    },
+    
+
     addItem: function (type, des, val){
 
       let item, id;
@@ -106,7 +134,9 @@ let appController = (function (uicontroller, financecontroller){
 
 
     if(input.description !== "" && input.value !== ""){
- let item = financecontroller.addItem(
+    
+    
+      let item = financecontroller.addItem(
     input.type, 
     input.description, 
     input.value
@@ -114,6 +144,10 @@ let appController = (function (uicontroller, financecontroller){
 
    uiController.addListItem(item, input.type);
    uiController.clearFields();
+
+   financeController.tusuvTootsooloh();
+
+   let tusuv = financeController.tusviigAvah();
 
     }
 
