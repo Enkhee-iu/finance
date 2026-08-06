@@ -4,7 +4,13 @@ let uiController = (function (){
     inputType: ".add__type",
     inputDescription: ".add__description",
     inputValue: ".add__value",
-    inputBtn: ".add__btn"
+    inputBtn: ".add__btn",
+    incomeList: ".income__list",
+    expensesList: ".expenses__list",
+    tusuvLabel: ".budget__value",
+    incomeLabel: ".budget__income--value",
+    expensesLabel: ".budget__expenses--value",
+    percentageLabel: ".budget__expenses--percentage"  
    };
 
   return{
@@ -31,6 +37,20 @@ let uiController = (function (){
       }
 
       fieldsArr[0].focus();
+    },
+
+     tusviigUzuuleh: function (tusuv) {
+      document.querySelector(Domstrings.tusuvLabel).textContent = tusuv.tusuv;
+      document.querySelector(Domstrings.incomeLabel).textContent = tusuv.totalInc;
+      document.querySelector(Domstrings.expensesLabel).textContent = tusuv.totalExp;
+      document.querySelector(Domstrings.percentageLabel).textContent = tusuv.huvi;
+
+      if (tusuv.huvi !== 0) {
+        document.querySelector(Domstrings.percentageLabel).textContent = tusuv.huvi + "%";
+      } else {
+        document.querySelector(Domstrings.percentageLabel).textContent = tusuv.huvi;
+      }
+
     },
 
     addListItem: function(item, type) {
@@ -149,6 +169,8 @@ let appController = (function (uicontroller, financecontroller){
 
    let tusuv = financeController.tusviigAvah();
 
+    uicontroller.tusviigUzuuleh(tusuv);
+
     }
 
   
@@ -177,6 +199,12 @@ let appController = (function (uicontroller, financecontroller){
   return{
     init: function () {
       console.log("Application started");
+      uicontroller.tusviigUzuuleh({
+        tusuv: 0,
+        huvi: 0,
+        totalInc: 0,
+        totalExp: 0
+      });
       setupEventListeners();
     }
   };
