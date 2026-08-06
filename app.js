@@ -62,6 +62,12 @@ let uiController = (function (){
         element = ".expenses__list";
         html = '<div class="item clearfix" id="expense-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
       }
+
+      newHtml = html.replace("%id%", item.id);
+      newHtml = newHtml.replace("%description%", item.description);
+      newHtml = newHtml.replace("%value%", item.value);
+
+      document.querySelector(element).insertAdjacentHTML("beforeend", newHtml);
     }
   }; 
 })();
@@ -83,12 +89,13 @@ let financeController = (function (){
   let calculateTotal = function (type) {
     let sum = 0;
     data.items[type].forEach(function(el){
-      sum = sum + el.value;
+      sum += el.value;
     });
+    data.totals[type] = sum;
   };
    
   let data = {
-    allItems: {
+    items: {
       inc: [],
       exp: []
     },
@@ -98,6 +105,7 @@ let financeController = (function (){
       exp: 0
     },
     tusuv: 0,
+    huvi: 0
   };
 
   return {
@@ -106,8 +114,12 @@ let financeController = (function (){
       calculateTotal("inc");
       calculateTotal("exp");
 
-      data.tusuv.tusuv = data.totals.inc - data.totals.exp;
-      data.huvi = Math.round((data.totals.exp / data.totals.inc) * 100);
+      data.tusuv = data.totals.inc - data.totals.exp;
+      if (data.totals.inc > 0) {
+        data.huvi = Math.round((data.totals.exp / data.totals.inc) * 100);
+      } else {
+        data.huvi = 0;
+      }
     },
 
     tusviigAvah: function () { 
@@ -119,21 +131,32 @@ let financeController = (function (){
       }
 
     },
+
+    deleteItem: function (type, id) {
+       let ids = data.items[type].map(function(el){
+        return el.id;
+       });
+       let index = ids.indexOf(id);
+
+       if(index !== -1) {
+        data.items[type].splice(index, 1);
+       }
+    },
     
 
-    addItem: function (type, des, val){
+    addItem: function (type, desc, val){
 
       let item, id;
 
-      if (data.allItems.items[type].length === 0) id = 1;
+      if (data.items[type].length === 0) id = 1;
       else {
-        id = data.allItems.items[type][ data.allItems.items[type].length - 1].id + 1;
+        id = data.items[type][data.items[type].length - 1].id + 1;
       }
 
       if(type === "inc") {
-        item = new Income (id, desc, val);
+        item = new Income(id, desc, val);
       } else {
-            item = new Expense (id, desc, val);
+        item = new Expense(id, desc, val);
       }
 
       data.items[type].push(item);
@@ -147,39 +170,27 @@ let financeController = (function (){
 
 let appController = (function (uicontroller, financecontroller){
 
-  let DOM = uicontroller.getDomstrings();s
+  let DOM = uicontroller.getDomstrings();
 
    let ctrlAddItem = function () {
     let input = uicontroller.getInput();
 
-
     if(input.description !== "" && input.value !== ""){
-    
-    
       let item = financecontroller.addItem(
-    input.type, 
-    input.description, 
-    input.value
-  );
+        input.type,
+        input.description,
+        parseFloat(input.value)
+      );
 
-   uiController.addListItem(item, input.type);
-   uiController.clearFields();
+      uicontroller.addListItem(item, input.type);
+      uicontroller.clearFields();
 
-   financeController.tusuvTootsooloh();
-
-   let tusuv = financeController.tusviigAvah();
-
-    uicontroller.tusviigUzuuleh(tusuv);
-
+      financecontroller.tusuvTootsooloh();
+      let tusuv = financecontroller.tusviigAvah();
+      uicontroller.tusviigUzuuleh(tusuv);
     }
 
-  
-
    };
-
- document.querySelector(Domstrings.inputBtn).addEventListener("click", function(){
-
- });
 
 
 
