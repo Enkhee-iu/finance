@@ -10,7 +10,8 @@ let uiController = (function (){
     tusuvLabel: ".budget__value",
     incomeLabel: ".budget__income--value",
     expensesLabel: ".budget__expenses--value",
-    percentageLabel: ".budget__expenses--percentage"  
+    percentageLabel: ".budget__expenses--percentage",
+    containerdiv: ".container"
    };
 
   return{
@@ -205,6 +206,20 @@ let appController = (function (uicontroller, financecontroller){
       ctrlAddItem();
     }
   });
+   document.querySelector(DOM.containerdiv).addEventListener("click", function(event){
+    let id = event.target.parentNode.parentNode.parentNode.parentNode.id;
+   if (id) {
+    let arr = id.split("-");
+    let type = arr[0];
+    let itemId = parseInt(arr[1]);
+
+    financecontroller.deleteItem(type, itemId);
+   }
+
+    financeController.deleteItem(type, itemId);
+    uicontroller.deleteListItem(id);
+  });
+
   }
 
   return{
